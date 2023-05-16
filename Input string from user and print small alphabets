@@ -1,0 +1,58 @@
+include Irvine32.inc
+
+.data
+  bufferSize = 100
+  inputMsg BYTE "Enter a string: ", 0
+  outputMsg BYTE "Separated small alphabets: ", 0
+  buffer BYTE bufferSize DUP(?)
+  smallAlphabets BYTE bufferSize DUP(?)
+
+.code
+main PROC
+  mov edx, OFFSET inputMsg
+  call writestring
+
+  mov edx, OFFSET buffer
+  mov ecx, bufferSize
+  call readstring
+
+  mov esi, OFFSET buffer
+  mov edi, OFFSET smallAlphabets
+  xor ecx, ecx ; Clear the counter
+
+  separateLoop:
+    mov al, [esi] 
+
+    cmp al, 0 
+    je printResult
+
+    cmp al, 'a'
+    jl increment 
+
+    cmp al, 'z'
+    jg increment 
+
+    mov [edi], al 
+    inc edi 
+
+    increment:
+    inc esi 
+
+    inc ecx 
+    cmp ecx, bufferSize 
+    jge printResult 
+
+    jmp separateLoop 
+
+  printResult:
+    mov edx, OFFSET outputMsg
+    call writestring
+
+    mov edx, OFFSET smallAlphabets
+    call writestring
+
+    call crlf
+    exit
+main ENDP
+
+end main
