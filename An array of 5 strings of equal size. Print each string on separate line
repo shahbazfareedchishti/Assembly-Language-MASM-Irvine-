@@ -1,0 +1,28 @@
+INCLUDE Irvine32.inc
+
+.DATA
+    wrd0 BYTE "BICYCLE", 0
+    wrd1 BYTE "CANOE", 0
+    wrd2 BYTE "SKATEBOARD", 0
+    wrd3 BYTE "OFFSIDE", 0
+    wrd4 BYTE "TENNIS", 0
+
+    pointers DWORD OFFSET wrd0, OFFSET wrd1, OFFSET wrd2, OFFSET wrd3, OFFSET wrd4
+
+.CODE
+main PROC
+
+    mov ecx, 0                          
+
+print_loop:
+    mov edx, [pointers + ecx * 4]       
+    call WriteString
+    call Crlf
+    inc ecx                            
+    cmp ecx, 5                          
+    jl print_loop                       
+    exit                            
+main ENDP
+END main
+
+END main
